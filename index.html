@@ -1,0 +1,84 @@
+<script src="https://www.paypal.com/sdk/js?&client-id=Aad5YDBLz8IMW8odKSgt4PehXMKXIsUNDALeJsO2RqbQQVjAs51RWhH50mp00Dzqha987Ms_uk9heDXo&merchant-id=RJF2AUHMSRS7S"></script>
+<div id="paypal-button-container"></div>
+<h1></h1>
+<script>
+  let orderid ="";
+ let x = paypal.Buttons({
+    createOrder: function (data, actions) {
+      console.log(data);
+      console.log(actions);
+     var myHeaders = new Headers();
+myHeaders.append("Content-Type", "application/json");
+myHeaders.append("Authorization", "Bearer A21AAJMQqtAjJXtURhGt8fLM7hGbvbh0i-YqEXOg_ZC-dD5LPqTS_-NSamplomVpA4Q484nFaBkIQwwNK4zotvnB8CaIDfDxw");
+myHeaders.append("PayPal-Partner-Attribution-Id", "FLAVORsb-dwzgw6662254_MP");
+
+var raw = JSON.stringify({
+  "intent": "CAPTURE",
+  "purchase_units": [
+    {
+      "amount": {
+        "currency_code": "USD",
+        "value": "100.00"
+      },
+      "payee": {
+        "email_address": "sb-lsnc46308052@business.example.com"
+      },
+      "payment_instruction": {
+        "disbursement_mode": "INSTANT",
+        "platform_fees": [
+          {
+            "amount": {
+              "currency_code": "USD",
+              "value": "25.00"
+            }
+          }
+        ]
+      }
+    }
+  ]
+});
+
+var requestOptions = {
+  method: 'POST',
+  headers: myHeaders,
+  body: raw,
+  redirect: 'follow'
+};
+return fetch("https://api-m.sandbox.paypal.com/v2/checkout/orders", requestOptions)
+  .catch(error => console.log('error', error))
+  .then(response => response.text())
+  .then(result => {console.log(result);
+     orderid = JSON.parse(result).id;
+     return orderid;
+  });
+    },
+    onApprove: function (data, actions) {
+      
+      console.log(data);
+      console.log(actions);
+      var myHeaders = new Headers();
+myHeaders.append("Authorization", "Bearer A21AAJMQqtAjJXtURhGt8fLM7hGbvbh0i-YqEXOg_ZC-dD5LPqTS_-NSamplomVpA4Q484nFaBkIQwwNK4zotvnB8CaIDfDxw");
+myHeaders.append("Content-Type", "application/json");
+
+var raw = JSON.stringify({});
+
+var requestOptions = {
+  method: 'POST',
+  headers: myHeaders,
+  body: raw,
+  redirect: 'follow'
+};
+
+fetch(`https://api.sandbox.paypal.com/v2/checkout/orders/${orderid}/capture`, requestOptions)
+  .then(response => response.text())
+  .then(result => console.log(result))
+  .catch(error => console.log('error', error));
+ 
+    }
+  }
+  );
+  console.log(x);
+  
+document.querySelector("h1").innerText = x;
+  x.render('#paypal-button-container');
+</script>

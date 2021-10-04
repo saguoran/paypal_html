@@ -1,0 +1,38 @@
+curl -v -X POST https://api-m.sandbox.paypal.com/v2/checkout/orders \
+ -H 'Content-Type: application/json' \
+ -H 'Authorization: Bearer A21AAJtdwRUlQMqO4fyF4whb_Qsns_wwtOBTFO3tmY61QnmRAM89a03ULAkxAXEvynYShxCmjgAOg-QwMQQTKglxtEHlQ6lgw' \
+ -H 'PayPal-Partner-Attribution-Id: FLAVORsb-dwzgw6662254_MP' \
+ -d '{
+ "intent": "CAPTURE",
+ "purchase_units": [{
+   "amount": {
+     "currency_code": "CAD",
+     "value": "100.00"
+   },
+   "payee": {
+     "email_address": "sb-lsnc46308052@business.example.com"
+   },
+   "payment_instruction": {
+     "disbursement_mode": "INSTANT",
+     "platform_fees": [{
+       "amount": {
+         "currency_code": "CAD",
+         "value": "25.00"
+       }
+     }]
+   }
+ }]
+}'
+
+
+curl -v -k -X POST https://api-m.paypal.com/v2/checkout/orders/75X16453GB770633L/capture \
+ -H 'PayPal-Partner-Attribution-Id: FLAVORsb-dwzgw6662254_MP' \
+ -H 'Authorization: Bearer A21AALjeuFXrb7wmQMC7ylefXaKgAfVjVC8e3kI4mIxoWKOy6Oj3UJgdTtQAeEV6MTqmkoWnR8ubcRj6BKDdFc46L16TjW9SA' \
+ -H 'Content-Type: application/json' \
+ -d '{}'
+
+ curl -v -k -X POST https://api-m.paypal.com/v2/checkout/orders/7CD130608B961344U/capture \
+ -H 'PayPal-Partner-Attribution-Id: FLAVORsb-dwzgw6662254_MP' \
+ -H 'Authorization: Bearer A21AAJMQqtAjJXtURhGt8fLM7hGbvbh0i-YqEXOg_ZC-dD5LPqTS_-NSamplomVpA4Q484nFaBkIQwwNK4zotvnB8CaIDfDxw' \
+ -H 'Content-Type: application/json' \
+ -d '{}'
